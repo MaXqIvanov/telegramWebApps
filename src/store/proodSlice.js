@@ -27,6 +27,7 @@ const prodSlice = createSlice({
       let count = state.proods[action.payload.index].amount + action.payload.amount
       if(count >= 0){
         state.proods[action.payload.index].amount = count
+        console.log();
       }
     },
   },
