@@ -21,9 +21,6 @@ const prodSlice = createSlice({
   },
   reducers: {
     changeProod(state, action) {
-      console.log(action.payload.elem);
-      console.log(action.payload.index);
-      console.log(action.payload.amount);
       let count = state.proods[action.payload.index].amount + action.payload.amount
       if(count >= 0){
         state.proods[action.payload.index].amount = count
