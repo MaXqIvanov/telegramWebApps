@@ -4,13 +4,14 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 40px;
+    padding-bottom: 80px;
+    position: relative;
 }
 .main_wrapper{
     width: 80%;
     height: 100%;
-    min-height: 90vh;
+    min-height: 85vh;
     display: grid;
     grid-template-columns: 48% 48%;
     column-gap: 4%;
@@ -20,7 +21,7 @@
     }
 }
 .template_pizza{
-    min-height: 200px;
+    min-height: 300px;
     min-width: 100px;
     max-height: 300px;
     display: flex;
@@ -73,4 +74,38 @@
     span{
         padding: 10px;
     }
+}
+.btn{
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.modalOrders{
+    height: 150px;
+    width: 250px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0px 0px 5px gray;
+    border-radius: 5px;
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    transform: translate(-100px, -200px);
+    span{
+
+    }
+}
+.modalOrders_wrapper{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }

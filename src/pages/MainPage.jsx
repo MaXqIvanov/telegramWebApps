@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import s from '../scss/MainPage.module.scss';
-import {Button} from 'react-bootstrap';
+import {Button, Modal} from 'react-bootstrap';
 import { changeProod } from '../store/proodSlice';
 
-export const MainPage = () => {
+export const MainPage = ({tele}) => {
     const dispatch = useDispatch();
     const {proods} = useSelector((state)=> state.prood)
+    const [isModal, setIsModal] = useState(false)
     const change = (elem)=>{
         dispatch(changeProod(elem))
+    }
+    const onOrder = ()=>{
+        setIsModal(!isModal);
     }
   return (
     <div className={s.main}>
@@ -25,7 +29,15 @@ export const MainPage = () => {
                     <div className={s.prood_price}>{elem.price} ₽</div>
                 </div>
             </div>) : <></>}
+            <div className={s.btn}><Button onClick={()=>onOrder()} type='button'>заказать</Button></div>
         </div>
+        {isModal ? <div className={s.modalOrders}><div className={s.modalOrders_wrapper}>
+            <span>Поздравляю! ваш заказ успешно оформлен</span>
+            </div> 
+                <div onClick={()=>onOrder()} className={`btn-close btn ${s.close}`} closeButton>
+                </div>
+            </div>
+            : <></> }
     </div>
   )
 }
