@@ -13,7 +13,6 @@ export const MainPage = ({tele}) => {
     }
     const onOrder = ()=>{
         setIsModal(!isModal);
-        console.log("hew");
     }
   return (
     <div className={s.main}>
