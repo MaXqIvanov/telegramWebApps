@@ -6,8 +6,11 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 function App() {
   useEffect(() => {
-    console.log(window.Telegram.WebApp);
-    console.log(window.Telegram.WebAppInitData.chat);
+    let tg = window.Telegram.WebApp;
+    console.log(tg.initData);
+    console.log(tg.WebAppInitData);
+    console.log(tg.WebAppUser?.id);
+    console.log(window.Telegram.WebApp.WebAppInitData);
   }, [])
   
   return (
