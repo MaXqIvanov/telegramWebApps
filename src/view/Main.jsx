@@ -150,9 +150,10 @@ function Main() {
         setIsLoading(false)
     }
 
-    useEffect(()=>{
-       loadData()
-    },[])
+    // вернуть эту строчку в процессе
+    // useEffect(()=>{
+    //    loadData()
+    // },[])
     useEffect(()=>{
         if(mHolder !== '' && dHolder !== '' && selectedService){
             setIsLoadDate(true);
