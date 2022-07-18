@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+*.conf
 # testing
 /coverage
 
@@ -17,8 +17,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
-.env
-/Bots/.env
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

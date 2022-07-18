@@ -1,26 +1,15 @@
-import './App.scss';
-import { Route, Routes } from 'react-router-dom';
-import { MainPage } from './pages/MainPage';
-import {useEffect} from 'react';
-
-const tele = window.Telegram.WebApp;
+import './App.css';
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import Main from "./Main";
 
 function App() {
-
-  useEffect(() => {
-    tele.ready();
-  }, [])
-  
   return (
     <div className="App">
-         <Routes>
-            <Route
-              path="/"
-              element={
-                <MainPage tele={tele}/>
-              }
-            />
-          </Routes>
+        <Router>
+            <Routes>
+                <Route exact path={'/portfolio/:id'} element={<Main />} />
+            </Routes>
+        </Router>
     </div>
   );
 }
