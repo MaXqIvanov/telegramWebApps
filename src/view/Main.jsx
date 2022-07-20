@@ -228,6 +228,7 @@ function Main() {
                 if (response.status === 200){
                     setModalV(false)
                     setSuccessFeedModalV(true)
+                    setFeedbackData([response.data, ...feedbackData])
                     setTimeout(() => {
                         setSuccessFeedModalV(false)
                     }, 3000);
@@ -266,6 +267,21 @@ function Main() {
         }))
     }
 
+
+// need delete btn bottom or this work for telegram
+useEffect(() => {
+  let tg = window.Telegram.WebApp;
+  let chat = window.Telegram.WebAppChat;
+  let profName;
+  console.log(tg);
+  console.log(chat);
+  profName = `${tg.initDataUnsafe.user.first_name}`
+  console.log(profName);
+
+}, [])
+
+// need delete btn top
+
     return (
         <Spin className="spinner_loading"  size="large" spinning={isLoading || sendData}>
     <Content className={isLoading ? 'main-container loading' : 'main-container'}>
@@ -281,7 +297,7 @@ function Main() {
             </Tooltip>
             <Button  onClick={() => {
             setFeedbackV(true)
-        }} size={'large'} className={'service-button'}>Записаться</Button>
+        }} size={'large'} className={'service-button'}>Записаться12</Button>
             <span className={'services-title'}>Услуги</span>
             <div className={'services-list'}>
         {servicesData.map(item => (
