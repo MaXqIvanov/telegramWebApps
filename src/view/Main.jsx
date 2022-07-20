@@ -274,7 +274,8 @@ useEffect(() => {
   let chat = window.Telegram.WebAppChat;
   let profName;
   console.log(tg);
-  console.log(chat);
+  console.log({...tg.initDataUnsafe});
+  console.log(tg.initData);
   profName = `${tg.initDataUnsafe.user.first_name}`
   console.log(profName);
 

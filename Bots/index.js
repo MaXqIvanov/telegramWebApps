@@ -12,6 +12,7 @@ const bot = new Telegraf('5460453079:AAECrP-8PyXD4vIcDeV7fpgMuBcbhilano8', { web
 bot.hears(/./, (ctx) =>{ 
     const num = Math.floor(Math.random() * 2)
     const chat = ctx.message
+    console.log(chat.chat.id);
     const web_link = `https://lambent-praline-e00ab7.netlify.app/?chat=${chat.chat.id}&params=#${chat.chat.id}` 
     //ctx.reply(chat.chat.title)
     //ctx.reply(chat.from.id)
@@ -22,7 +23,7 @@ bot.hears(/./, (ctx) =>{
     const mainButton = 
     ctx.telegram.sendMessage(chat.from.id, `Здраствуйте ${chat.from.first_name}!, Вы собираитесь записаться на услуги к мастеру из группы ${chat.chat.title}, для этого нажмите на кнопку ниже`, {
         reply_markup: { 
-            inline_keyboard: [[{ text: `Записаться на услугу`, web_app: {url: web_link}}]]},
+            inline_keyboard: [[{ text: `Записаться на услугу`, web_app: {url: web_link, hash: '123'}}]]},
             parse_mode: 'Markdown',
         })
     },
