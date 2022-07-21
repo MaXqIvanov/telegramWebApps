@@ -11,6 +11,7 @@ const bot = new Telegraf('5460453079:AAECrP-8PyXD4vIcDeV7fpgMuBcbhilano8', { web
 // bot.hears(/./, (ctx) => ctx.reply('Welcome', {reply_markup:{keyboard:[[{ text: 'заказать', web_app: {url: web_link}}]]}}))
 
 bot.hears(/./, async (ctx) =>{ 
+
     const chat = ctx.message
     const web_link = `https://lambent-praline-e00ab7.netlify.app/`
     let chat_id;
@@ -37,9 +38,9 @@ try {
                 parse_mode: 'Markdown',
         })    
 
-    //?? block for delete messages //!! important
-
-    for(let i = 0; i <= 1; i++ ){
+    //?? block for delete messages //!! important   need work for this func
+    
+    for(let i = 0; i <= 20; i++ ){
         try {
             k =  ctx.message.message_id-i;
             await ctx.deleteMessage(k)   
