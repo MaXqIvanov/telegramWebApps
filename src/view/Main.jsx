@@ -1,4 +1,5 @@
 import api from "../plugins/axios/api";
+import axios from 'axios';
 import {Content} from "antd/es/layout/layout";
 import Avatar from "antd/es/avatar/avatar";
 import {useEffect, useState} from "react";
@@ -268,20 +269,18 @@ function Main() {
     }
 
 
-// need delete btn bottom or this work for telegram
+// this is work with telegram
 useEffect(() => {
   let tg = window.Telegram.WebApp;
-  let chat = window.Telegram.WebAppChat;
-  let profName;
-  console.log(tg);
-  console.log({...tg.initDataUnsafe});
-  console.log(tg.initData);
-  profName = `${tg.initDataUnsafe.user.first_name}`
-  console.log(profName);
+  let user = {...tg.initData};
+  let user_id = tg.initDataUnsafe.user.id
+  console.log(user_id);
 
+   // axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${}`).then((response)=> console.log(response))
+   
 }, [])
 
-// need delete btn top
+// end work with telegram
 
     return (
         <Spin className="spinner_loading"  size="large" spinning={isLoading || sendData}>
@@ -298,7 +297,7 @@ useEffect(() => {
             </Tooltip>
             <Button  onClick={() => {
             setFeedbackV(true)
-        }} size={'large'} className={'service-button'}>Записаться12</Button>
+        }} size={'large'} className={'service-button'}>Записаться</Button>
             <span className={'services-title'}>Услуги</span>
             <div className={'services-list'}>
         {servicesData.map(item => (

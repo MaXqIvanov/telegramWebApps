@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/MaXqIvanov/bots#readme",
   "dependencies": {
+    "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "micro-bot": "^2.5.3",
