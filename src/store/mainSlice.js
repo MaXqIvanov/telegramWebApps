@@ -5,7 +5,7 @@ import moment from "moment";
 export const getMastersShedule = createAsyncThunk(
   'main/getMastersShedule',
   async (params, action) => {
-    const response = await api(`portfolio/user_landing/actual_chedule/${params.year}/${params.monthe}/?mst=${params.id}`)
+    const response = await api(`portfolio/user_landing/actual_chedule/${params.year}/${params.monthe}/?telegram_group=${params.id}`)
     return {response, params}
   }
 )

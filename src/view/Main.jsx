@@ -35,7 +35,8 @@ import image from '../media/image_not_found.svg'
 const { TextArea } = Input;
 
 function Main() {
-    //const {user} = useSelector((state)=> state.main)   
+    //const {user} = useSelector((state)=> state.main) 
+    const [telegramChatId, setTelegramChatId] = useState()  
     const dispatch = useDispatch(); 
     const {shedulesMaster} = useSelector(state => state.main)
     //dispatch(addUser(params))
@@ -111,15 +112,15 @@ function Main() {
     });
 
     const loadData = async ()=>{
-        let paramsNew = searchParams.get('id')
-        if(paramsNew){
-
-        }
-        else{
-            setErrorModal(true)
-        }
         setIsLoading(true)
-        await api(`portfolio/user_landing/master/?mst=${searchParams.get('id')}`)
+        let tg = window.Telegram.WebApp;
+        let user = {...tg.initData};
+        let user_id = tg.initDataUnsafe.user.id
+        let chat_id;
+        await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ chat_id = response.data 
+        setTelegramChatId(response.data)
+    })
+        await api(`portfolio/user_landing/master/?telegram_group=${chat_id}`)
        .then((response)=>{
            setUserData(response.data[0])
            setIsLoading(false)
@@ -129,7 +130,7 @@ function Main() {
                setErrorModal(true)
            }
         })
-        await api(`portfolio/user_landing/services/?mst=${searchParams.get('id')}`)
+        await api(`portfolio/user_landing/services/?telegram_group=${chat_id}`)
             .then((response)=>{
                 setServicesData(response.data)
                 let images = document.querySelectorAll('img');
@@ -144,7 +145,7 @@ function Main() {
                         });
                 });
             })
-        await api(`portfolio/user_landing/grades/?mst=${searchParams.get('id')}`)
+        await api(`portfolio/user_landing/grades/?telegram_group=${chat_id}`)
             .then((response)=>{
                 setFeedbackData(response.data)
             })
@@ -262,7 +263,7 @@ function Main() {
     const getFreeDay = (value)=>{
         setMHolder(value);
         dispatch(getMastersShedule({
-            id: searchParams.get('id'),
+            id: telegramChatId,
             year: yHolder,
             monthe: value
         }))
