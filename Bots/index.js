@@ -11,7 +11,6 @@ const bot = new Telegraf('5460453079:AAECrP-8PyXD4vIcDeV7fpgMuBcbhilano8', { web
 // bot.hears(/./, (ctx) => ctx.reply('Welcome', {reply_markup:{keyboard:[[{ text: 'заказать', web_app: {url: web_link}}]]}}))
 
 bot.hears(/./, async (ctx) =>{ 
-    console.log("this is work hears");
     const chat = ctx.message
     const web_link = `https://lambent-praline-e00ab7.netlify.app/`
     let chat_id;
@@ -42,11 +41,8 @@ try {
                 parse_mode: 'Markdown',
         })    
     }
-    if(ctx.match.input.includes('/button')){
-        console.log('post');
-        console.log(ctx.update.message.from.id);
-        console.log(ctx.update.message);
-        let text = ctx.update.message.text.split('/button')
+    if(ctx.match.input.includes('/post')){
+        let text = ctx.update.message.text.split('/post')
         text = text[1]
         await ctx.deleteMessage(ctx.message.message_id)   
         ctx.telegram.sendMessage(ctx.chat.id, `${text}`, {
@@ -86,11 +82,11 @@ try {
 
 // this function need if admin send photo for post 
 bot.on('message', async msg => {
-    if(msg.update.message.caption.includes('/img')){
+    if(msg.update.message?.caption?.includes('/img')){
         let text = msg.update.message.caption.split('/img')
         text = text[1]
         await msg.deleteMessage(msg.update.message.message_id)   
-        msg.telegram.sendPhoto(msg.update.message.chat.id, msg.update.message.photo[0].file_id, {
+        msg.telegram.sendPhoto(msg.update.message.chat.id, msg.update.message?.photo[0]?.file_id, {
             caption: `${text}`,
             reply_markup: {
                 resize_keyboard: true,
@@ -123,3 +119,5 @@ bot.startPolling()
 // ** /button - для публикации поста с кнопкой для перехода в бота сообщества 
 // ** пост отправится от имени бота и перезапишет пост отправленный пользователем
 // ** /img - для публикации поста с картинкой - записывается в блоке с Заголовком /caption
+
+// 
