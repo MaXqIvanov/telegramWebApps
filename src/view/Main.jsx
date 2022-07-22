@@ -51,7 +51,7 @@ function Main() {
     let [modalV, setModalV] = useState(false)
     let [successModalV, setSuccessModalV] = useState(false)
     let [errorModal, setErrorModal] = useState(false)
-    let [selectedService, setSelectedService] = useState("")
+    let [selectedService, setSelectedService] = useState('')
     let [commentHolder, setCommentHolder] = useState(null)
     let [nameHolder, setNameHolder] = useState('')
     let [phoneHolder, setPhoneHolder] = useState('')
@@ -69,7 +69,7 @@ function Main() {
     let [checkFeedHolder,setCheckFeedHolder] = useState(true)
     let [successFeedModalV, setSuccessFeedModalV] = useState(false)
     let [yHolder,setYHolder] = useState(moment().year())
-    let [mHolder,setMHolder] = useState("")
+    let [mHolder,setMHolder] = useState('')
     let [dHolder,setDHolder] = useState('')
     let [isLoading,setIsLoading] = useState(false)
 
@@ -117,45 +117,52 @@ function Main() {
         let user = {...tg.initData};
         let user_id = tg.initDataUnsafe.user.id
         let chat_id;
+
         await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ chat_id = response.data 
         setTelegramChatId(response.data)
-    })
-        await api(`portfolio/user_landing/master/?telegram_group=${chat_id}`)
-       .then((response)=>{
-           setUserData(response.data[0])
-           setIsLoading(false)
-       })
-       .catch((e)=>{
-           if (e.response.status === 500 || e.response.status === 403){
-               setErrorModal(true)
-           }
-        })
-        await api(`portfolio/user_landing/services/?telegram_group=${chat_id}`)
+        console.log(response.data);
+         }).then(async ()=>{
+            console.log("this is after response");
+            console.log(chat_id);
+            console.log(telegramChatId);
+            await api(`portfolio/user_landing/master/?telegram_id=${chat_id}`)
             .then((response)=>{
-                setServicesData(response.data)
-                let images = document.querySelectorAll('img');
-                images.forEach( img => {
-                    checkImagePromise( img.src )
-                        .then( res => {
-                            // С картинкой все ок - ничего не делаем
-                        })
-                        .catch( error => {
-                            // С картинкой ошибка - ставим заглушку
-                            img.src = image;
-                        });
-                });
+                setUserData(response.data[0])
+                setIsLoading(false)
             })
-        await api(`portfolio/user_landing/grades/?telegram_group=${chat_id}`)
-            .then((response)=>{
-                setFeedbackData(response.data)
+            .catch((e)=>{
+                if (e.response.status === 500 || e.response.status === 403){
+                    setErrorModal(true)
+                }
             })
+            await api(`portfolio/user_landing/services/?telegram_id=${chat_id}`)
+                .then((response)=>{
+                    setServicesData(response.data)
+                    let images = document.querySelectorAll('img');
+                    images.forEach( img => {
+                        checkImagePromise( img.src )
+                            .then( res => {
+                                // С картинкой все ок - ничего не делаем
+                            })
+                            .catch( error => {
+                                // С картинкой ошибка - ставим заглушку
+                                img.src = image;
+                            });
+                    });
+                })
+            await api(`portfolio/user_landing/grades/?telegram_id=${chat_id}`)
+                .then((response)=>{
+                    setFeedbackData(response.data)
+                })
+         })
+       
         setIsLoading(false)
     }
 
     // вернуть эту строчку в процессе
-    // useEffect(()=>{
-    //    loadData()
-    // },[])
+    useEffect(()=>{
+       loadData()
+    },[])
     useEffect(()=>{
         if(mHolder !== '' && dHolder !== '' && selectedService){
             setIsLoadDate(true);
@@ -224,7 +231,7 @@ function Main() {
                 phone: '+7' + phoneFeedHolder,
                 comment: commentFeedHolder,
                 grade: gradeFeedHolder,
-                assessed: searchParams.get('id').id,
+                assessed: telegramChatId,
             })
             .then((response)=>{
                 if (response.status === 200){
@@ -268,20 +275,6 @@ function Main() {
             monthe: value
         }))
     }
-
-
-// this is work with telegram
-useEffect(() => {
-  let tg = window.Telegram.WebApp;
-  let user = {...tg.initData};
-  let user_id = tg.initDataUnsafe.user.id
-  console.log(user_id);
-
-   // axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${}`).then((response)=> console.log(response))
-   
-}, [])
-
-// end work with telegram
 
     return (
         <Spin className="spinner_loading"  size="large" spinning={isLoading || sendData}>

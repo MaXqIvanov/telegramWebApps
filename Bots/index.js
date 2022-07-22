@@ -18,6 +18,7 @@ bot.hears(/./, async (ctx) =>{
     let user_id;
     //console.log(ctx.match);
     //console.log(chat);
+
     if(ctx.match.input.includes('/start ')){
         chat_id = chat.text.split(' ')
         user_id = chat.from.id;
@@ -40,18 +41,22 @@ try {
 
     //?? block for delete messages //!! important   need work for this func
     
-    for(let i = 0; i <= 20; i++ ){
-        try {
-            k =  ctx.message.message_id-i;
-            await ctx.deleteMessage(k)   
-        } catch (error) {
-            
+    for(let i = 0; i <= 200; i++ ){
+        if(ctx.message.from.id === ctx.message.chat.id){
+            try {
+                // console.log(ctx);
+                // console.log({...ctx.message});
+                k =  ctx.message.message_id-i;
+                await ctx.deleteMessage(k)   
+            } catch (error) {
+                
+            }
         }
     }
     //?? block for delete messages
-    
+    //5097262048
     } catch (error) {
-    console.log(error);
+    //console.log(error);
 }
 
 },
@@ -60,6 +65,7 @@ bot.startPolling()
 // http://dev1.itpw.ru:8005/marketplace/telegram_chat/
 
 // Логика - пользователь постит пост - оставляет ссылку в формате https://t.me/IT_Power_new_bot?start=kD7Z0aaJKhY3ZThi
+// https://t.me/IT_Power_new_bot?start=https://t.me/kD7Z0aaJKhY3ZThi
 // **ссылка на бота + имя канала после ?start
 // !! Если получается, что поле инпут равно '/start/ - значит пользователь уже пользуется нашим ботом и в базе данных есть его айди и номер канала
 // !! если ссылка содержит после /start +наименование группы - значит пользователь или зашёл из другой группы в бота или он впервые 
