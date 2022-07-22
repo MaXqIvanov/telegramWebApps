@@ -18,12 +18,16 @@ bot.hears(/./, async (ctx) =>{
     let user_id;
     //console.log(ctx.match);
     //console.log(chat);
-
     if(ctx.match.input.includes('/start ')){
         chat_id = chat.text.split(' ')
         user_id = chat.from.id;
         console.log(chat_id[1]);
         console.log(user_id);
+
+        // delete this line
+        console.log("this is user");
+        console.log(chat.from);
+        // end delete this line
         await axios.post(`https://everyservices.itpw.ru/chat/telegram_chat/`,{
             "user": String(user_id),
             "chat": String(chat_id)

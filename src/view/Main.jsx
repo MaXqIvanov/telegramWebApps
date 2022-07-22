@@ -120,14 +120,9 @@ function Main() {
         try {
             await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ 
             let user_info = response.data
-            console.log(user_info[0]);
             chat_id = user_info[0].chat_telegram_id 
-            console.log(chat_id);
             setTelegramChatId(chat_id)
              }).then(async ()=>{
-                console.log("this is after response");
-                console.log(chat_id);
-                console.log(telegramChatId);
                 await api(`portfolio/user_landing/master/?telegram_id=${chat_id}`)
                 .then((response)=>{
                     setUserData(response.data[0])
