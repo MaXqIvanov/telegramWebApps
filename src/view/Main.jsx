@@ -117,45 +117,51 @@ function Main() {
         let user = {...tg.initData};
         let user_id = tg.initDataUnsafe.user.id
         let chat_id;
-
-        await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ chat_id = response.data 
-        setTelegramChatId(response.data)
-        console.log(response.data);
-         }).then(async ()=>{
-            console.log("this is after response");
+        try {
+            await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ 
+            let user_info = response.data
+            console.log(user_info[0]);
+            chat_id = user_info[0].chat_telegram_id 
             console.log(chat_id);
-            console.log(telegramChatId);
-            await api(`portfolio/user_landing/master/?telegram_id=${chat_id}`)
-            .then((response)=>{
-                setUserData(response.data[0])
-                setIsLoading(false)
-            })
-            .catch((e)=>{
-                if (e.response.status === 500 || e.response.status === 403){
-                    setErrorModal(true)
-                }
-            })
-            await api(`portfolio/user_landing/services/?telegram_id=${chat_id}`)
+            setTelegramChatId(chat_id)
+             }).then(async ()=>{
+                console.log("this is after response");
+                console.log(chat_id);
+                console.log(telegramChatId);
+                await api(`portfolio/user_landing/master/?telegram_id=${chat_id}`)
                 .then((response)=>{
-                    setServicesData(response.data)
-                    let images = document.querySelectorAll('img');
-                    images.forEach( img => {
-                        checkImagePromise( img.src )
-                            .then( res => {
-                                // С картинкой все ок - ничего не делаем
-                            })
-                            .catch( error => {
-                                // С картинкой ошибка - ставим заглушку
-                                img.src = image;
-                            });
-                    });
+                    setUserData(response.data[0])
+                    setIsLoading(false)
                 })
-            await api(`portfolio/user_landing/grades/?telegram_id=${chat_id}`)
-                .then((response)=>{
-                    setFeedbackData(response.data)
+                .catch((e)=>{
+                    if (e.response.status === 500 || e.response.status === 403){
+                        setErrorModal(true)
+                    }
                 })
-         })
-       
+                await api(`portfolio/user_landing/services/?telegram_id=${chat_id}`)
+                    .then((response)=>{
+                        setServicesData(response.data)
+                        let images = document.querySelectorAll('img');
+                        images.forEach( img => {
+                            checkImagePromise( img.src )
+                                .then( res => {
+                                    // С картинкой все ок - ничего не делаем
+                                })
+                                .catch( error => {
+                                    // С картинкой ошибка - ставим заглушку
+                                    img.src = image;
+                                });
+                        });
+                    })
+                await api(`portfolio/user_landing/grades/?telegram_id=${chat_id}`)
+                    .then((response)=>{
+                        setFeedbackData(response.data)
+                    })
+             })
+           
+        } catch (error) {
+            
+        }
         setIsLoading(false)
     }
 
@@ -231,7 +237,7 @@ function Main() {
                 phone: '+7' + phoneFeedHolder,
                 comment: commentFeedHolder,
                 grade: gradeFeedHolder,
-                assessed: telegramChatId,
+                telegram_id: telegramChatId,
             })
             .then((response)=>{
                 if (response.status === 200){
@@ -347,7 +353,7 @@ function Main() {
             >
             <Tooltip placement="left" title={item.grade}>
             <div className={'comment-grade-div'}>
-            <Rate disabled value={item.grade}></Rate>
+            <Rate className={'grade'} disabled value={item.grade}></Rate>
             </div>
             </Tooltip>
             </Comment>
