@@ -115,7 +115,7 @@ function Main() {
         setIsLoading(true)
         let tg = window.Telegram.WebApp;
         let user = {...tg.initData};
-        let user_id = tg.initDataUnsafe.user.id
+        let user_id = tg.initDataUnsafe.user?.id
         let chat_id;
         try {
             await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ 
@@ -524,8 +524,15 @@ function Main() {
 
 
     </Content>
-        </Spin>
-
+    {telegramChatId === undefined && 
+    <div className={'block_not_found'}>
+        <div className={'block_not_found_wrapper'}>
+            <div className={'not_found_title'}><div className={'not_found_img'}></div><div>Вас приветствует telegram bot, разработанный компаний IT-Power, если вы хотите подключить
+            себе данного бота и узнать его функционал, зайдите на сайт it-power.ru</div></div>    
+        </div>        
+    </div>}
+</Spin>
+        
     );
 }
 

@@ -77,6 +77,9 @@ width:300px ;
 border-radius: 25px;
 overflow: hidden;
 box-shadow: 0px 0px 8px rgb(226, 226, 226);
+@media(max-width: 500px){
+    width: 280px;
+}
 }
 .card-text{
     overflow-y: auto;
@@ -103,6 +106,10 @@ box-shadow: 0px 0px 8px rgb(226, 226, 226);
     height:355px;
     overflow-y: auto;
     margin-bottom: 48px !important;
+
+    @media(max-width: 450px){
+        width: 94%;
+    }
 }
 .comment-item{
     display: flex;
@@ -188,6 +195,9 @@ option{
     gap: 4px;
     margin-bottom: 8px;
 
+    @media(max-width: 450px){
+        justify-content: space-between;
+    }
 }
 .time-item{
     padding:4px 9px 4px 9px;
@@ -278,4 +288,37 @@ option {
 }
 .spinner_loading{
     z-index: 9999 !important;
+}
+.block_not_found{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.block_not_found_wrapper{
+    max-width: 80%;
+    font-size: x-large;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.not_found_title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.not_found_img{
+    height: 150px;
+    width: 150px;
+    background-image: url('../media/teleg_logo.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
 }
