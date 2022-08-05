@@ -140,6 +140,13 @@ function Main() {
                     .then((response)=>{
                         setFeedbackData(response.data)
                     })
+
+                dispatch(getMastersShedule({
+                    id: searchParams.get('id'),
+                    year: moment().year(),
+                    monthe: moment().month() + 1
+                    }))
+                    setMHolder(moment().month() + 1)
              })
            
         } catch (error) {
@@ -165,15 +172,18 @@ function Main() {
                 }
             })
             .catch((err)=>{
-                setErrors(err?.response?.data?.detail)
+                if(err.response.data.detail){
+                    setErrors(err?.response?.data?.detail)
+                }
                 if (err.response.status === 400){
                     setTimeData([])
                     // setSelectedDate(null)
                     setNotWorking(true)
+                    setSelectedDate(mHolder + '.' + dHolder + '.' + yHolder)
                 }
-                if (err.response.status === 500){
-                    setNotSetService(true)
-                }
+                // if (err.response.status === 500){
+                //     setNotSetService(true)
+                // }
                 else {
                     setNotSetService(false)
                 }
@@ -265,30 +275,29 @@ function Main() {
         }))
     }
     const getCurrentDay = (value)=>{
-        if(value !== null) {
+        if(value  !== null) {
             let day = String(value).split(' ')[2]
             setDHolder(day)
             setMHolder(value.getMonth() + 1)
             setYHolder(String(value)?.split(' ')[3])
-            // setSelectedDate(mHolder + '.' + dHolder + '.' + yHolder)
+            setNotSetService(false)
+            } 
+            if(value == 'Invalid Date') {
+                setErrors('Невалидная дата')
+                setNotSetService(true)
+            // setSelectedDate(mHolder  + '.' + dHolder + '.' + yHolder)
+        }else {
+            setNotSetService(false)
         }
     }
-    useEffect(() => {
-        console.log();
-      dispatch(getMastersShedule({
-        id: searchParams.get('id'),
-        year: moment().year(),
-        monthe: moment().month() + 1
-      }))
-      setMHolder(moment().month() + 1)
-    }, [])
     
     const closeDatePicker = () => {
         dispatch(getMastersShedule({
-            id: searchParams.get('id'),
+            id: telegramChatId,
             year: moment().year(),
             monthe: moment().month() + 1
           }))
+          
     }
 
       const changeMonth = (month) => {
@@ -298,13 +307,11 @@ function Main() {
         setMHolder(month.getMonth() + 1)
         setYHolder(String(month).split(' ')[3])
         dispatch(getMastersShedule({
-            id: searchParams.get('id'),
+            id: telegramChatId,
             year: year,
             monthe: current_month + 1,
         }))
       };
-
-    //   !! Изменить параметр айди на другое поле - а именно telegram id
 
     //   const [openCalendar, setOpenCalendar] = useState(false)
     //   useEffect(() => {

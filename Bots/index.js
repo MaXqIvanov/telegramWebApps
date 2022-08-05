@@ -19,19 +19,17 @@ bot.hears(/./, async (ctx) =>{
   const web_link = `https://lambent-praline-e00ab7.netlify.app/`
   let chat_id;
   let user_id;
-  console.log(ctx.match);
-  console.log(ctx);
-
-  
 
   if(ctx.match.input.includes('/start ')){
       chat_id = chat.text.split(' ')
       user_id = chat.from.id;
+      console.log(chat_id[1]);
+      console.log(user_id);
       // delete this line
       // end delete this line
       await axios.post(`https://everyservices.itpw.ru/chat/telegram_chat/`,{
           "user": String(user_id),
-          "chat": String(chat_id)
+          "chat": String(chat_id[1])
       }).catch((e)=> {}).then((response)=> console.log(response))
   }
 try {
