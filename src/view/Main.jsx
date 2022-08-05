@@ -472,7 +472,7 @@ function Main() {
                             {notWorking &&
                             <Alert className={'form-input'} message={errors} type="error"/>
                             }
-                            {notSetService ? selectedService !== '' && 
+                            {notSetService ? selectedService !== '' && notWorking === false && 
                             <Alert className={'form-input'} type="error" message={errors} />
                             : <></>
                             }
