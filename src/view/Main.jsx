@@ -1,6 +1,4 @@
 import api from "../plugins/axios/api";
-import axios from 'axios';
-import {Content} from "antd/es/layout/layout";
 import Avatar from "antd/es/avatar/avatar";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
@@ -8,10 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import {
     Alert,
     Button,
-    Card,
-    Comment,
     Spin,
-    DatePicker,
     Form,
     Input,
     Rate,
@@ -23,9 +18,7 @@ import {
 } from "antd";
 import "antd/dist/antd.css";
 import '../scss/Main.scss';
-import Meta from "antd/es/card/Meta";
 import Modal from "antd/es/modal/Modal";
-import {PlusOutlined} from "@ant-design/icons";
 import Error from "../components/FailedPage/Error";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,7 +99,7 @@ function Main() {
         let user_id = tg.initDataUnsafe.user?.id
         let chat_id;
         try {
-            await axios.get(`https://everyservices.itpw.ru/chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ 
+            await api(`chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ 
             let user_info = response.data
             chat_id = user_info[0].chat_telegram_id 
             setTelegramChatId(chat_id)
