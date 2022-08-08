@@ -27,10 +27,10 @@ bot.hears(/./, async (ctx) =>{
       console.log(user_id);
       // delete this line
       // end delete this line
-      await axios.post(`https://everyservices.itpw.ru/chat/telegram_chat/`,{
-          "user": String(user_id),
-          "chat": String(chat_id[1])
-      }).catch((e)=> {}).then((response)=> console.log(response))
+      await axios.post(`https://everyservicesapi.itpw.ru/chat/telegram_chat/`,{
+          "user_telegram_id": String(user_id),
+          "chat_telegram_id": String(chat_id[1])
+      }).catch((e)=> console.log(e)).then((response)=> console.log(response))
   }
 try {
   if(ctx.match.input.includes('/start')){

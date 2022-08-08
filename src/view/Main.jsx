@@ -103,6 +103,12 @@ function Main() {
             let user_info = response.data
             chat_id = user_info[0].chat_telegram_id 
             setTelegramChatId(chat_id)
+            
+            dispatch(getMastersShedule({
+                id: chat_id,
+                year: moment().year(),
+                monthe: moment().month() + 1
+            }))
              }).then(async ()=>{
                 await api(`portfolio/user_landing/master/?telegram_id=${chat_id}`)
                 .then((response)=>{
@@ -134,11 +140,6 @@ function Main() {
                         setFeedbackData(response.data)
                     })
 
-                dispatch(getMastersShedule({
-                    id: searchParams.get('id'),
-                    year: moment().year(),
-                    monthe: moment().month() + 1
-                    }))
                     setMHolder(moment().month() + 1)
              })
            
