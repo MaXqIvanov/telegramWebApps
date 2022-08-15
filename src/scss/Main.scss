@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 .avatar{
     border: 2px solid #190dfc;
 }
@@ -77,9 +78,9 @@ width:300px ;
 border-radius: 25px;
 overflow: hidden;
 box-shadow: 0px 0px 8px rgb(226, 226, 226);
-@media(max-width: 500px){
-    width: 280px;
-}
+display: grid;
+grid-template-rows: 45% 45%;
+row-gap: 10%;
 }
 .card-text{
     overflow-y: auto;
@@ -95,21 +96,24 @@ box-shadow: 0px 0px 8px rgb(226, 226, 226);
     font-size: 14px;
     font-weight:bold ;
 }
+.ant-card-body{
+}
+.group-card{
+    
+}
 .card-timeline{
     margin-top: 20px;
     font-weight: bold;
     float: right;
+    float: bottom;
     font-size: 14px;
+    float: inline-end;
 }
 .feedback-list{
     width: 92%;
     height:355px;
     overflow-y: auto;
     margin-bottom: 48px !important;
-
-    @media(max-width: 450px){
-        width: 94%;
-    }
 }
 .comment-item{
     display: flex;
@@ -117,7 +121,7 @@ box-shadow: 0px 0px 8px rgb(226, 226, 226);
     align-items: center;
 }
 .ant-comment-nested{
-    @media(max-width: 720px){
+    @media(max-width: 630px){
         width: fit-content;
         max-width: 100px;
         margin-left: 20px;
@@ -125,14 +129,14 @@ box-shadow: 0px 0px 8px rgb(226, 226, 226);
 }
 .ant-comment{
 
-    @media(max-width: 720px){
+    @media(max-width: 630px){
         display: grid;
         grid-template-columns: 75% 25%;
     }
 }
 .ant-rate-star:not(:last-child) {
 
-    @media(max-width: 720px){
+    @media(max-width: 630px){
         margin-right: 4px;
     }
 }
@@ -141,7 +145,7 @@ box-shadow: 0px 0px 8px rgb(226, 226, 226);
     white-space: nowrap;
 }
 .grade{
-    @media(max-width: 720px){
+    @media(max-width: 630px){
         font-size: x-small;
     }
 }
@@ -195,9 +199,6 @@ option{
     gap: 4px;
     margin-bottom: 8px;
 
-    @media(max-width: 450px){
-        justify-content: space-between;
-    }
 }
 .time-item{
     padding:4px 9px 4px 9px;
@@ -352,7 +353,7 @@ option {
     display: flex;
     justify-content: center;
 }
-.section_main{
+.section_main_desktop{
     width: 80%;
     height: 100%;
     min-height: 100vh;
@@ -368,6 +369,9 @@ option {
         width: 96%;
         min-width: auto;
     }
+    @media(max-width: 629px){
+        display: none;
+    }
 }
 .section_user{
     height: 280px;
@@ -377,14 +381,15 @@ option {
 .user_img{
     position: absolute;
     left: 50%;
-    transform: translate(-50%, -20%);
-    height: 100px;
-    width: 100px;
+    -webkit-transform: translate(-50%, -20%);
+        -ms-transform: translate(-50%, -20%);
+            transform: translate(-50%, -20%);
+    height: 104px;
+    width: 104px;
     background-repeat: no-repeat;
     background-size: contain;
-    border-radius: 50%;
-    outline: 4px white solid;
-
+    border-radius: 50% !important;
+    border: 4px white solid;
 }
 .user_name{
     position: absolute;
@@ -416,6 +421,7 @@ option {
 }
 .user_raiting_number{
     margin: 4px;
+    margin-top: 6px;
     margin-left: 10px;
     font-size: medium;
     font-family: 'Montserrat', sans-serif;
@@ -503,7 +509,7 @@ option {
 
     @media(max-width: 630px){
         grid-template-columns: 100%;
-        width: 90%;
+        width: 100%;
     }
 }
 .service{
@@ -714,7 +720,7 @@ option {
 }
 .rewiews_grade_raiting{
     position: absolute;
-    top: 2px;
+    top: 5px;
     left: 130px;
     font-size: x-small;
     font-family: 'Montserrat', sans-serif;
@@ -815,6 +821,10 @@ option {
     padding-right: 40px;
     margin-top: -2px;
     cursor: pointer;
+    @media(max-width: 330px){
+        margin-top: -2px;
+        padding-right: 25px;
+    }
 }
 .section_botton{
     position: absolute;
@@ -828,42 +838,58 @@ option {
     line-height: 44px;
     color: #C7C7C7;
 }
-.block_not_found{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: white;
-    font-family: 'Montserrat', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.block_not_found_wrapper{
-    max-width: 80%;
-    font-size: x-large;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    @media(max-width: 630px){
-        max-width: 90%;
-        font-size: large;
+.input_phone{
+    border: 0px;
+    padding: 4px;
+    padding-left: 10px;
+    box-shadow: 0px 0px 1.3px rgb(95, 95, 95);
+    border-radius: 1px;
+    border: 1px solid #d9d9d9;
+    outline: 0px;
+    box-shadow: 0px 0px 0px gray;
+    &::placeholder{
+        color: rgb(178, 178, 178);
+    }
+    &:focus{
+        box-sizing: border-box;
+        outline: 1px solid #40a9ff;
+        border-color: #40a9ff;
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
+    &:hover{
+        box-sizing: border-box;
+        outline: 1px solid #40a9ff;
+        border-color: #40a9ff;
     }
 }
-.not_found_title{
+
+.section_main_mobile{
+    width: 80%;
+    height: 100%;
+    min-height: 100vh;
+    min-width: 650px;
+    margin-top: -30px;
+    margin-bottom: 50px;
+    background: white;
+    border-radius: 25px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
+    @media(max-width: 730px){
+        width: 96%;
+        min-width: auto;
+    }
+    @media(min-width: 630px){
+        display: none;
+    }
 }
-.not_found_img{
-    height: 150px;
-    width: 150px;
-    background-image: url('../media/teleg_logo.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-top: 20px;
-    margin-bottom: 20px;
+.decline_calendar{
+    border: 0px ;
+
+    &:hover{
+        box-shadow: none;
+        border: none;
+        outline: none;
+        background: white;
+    }
 }

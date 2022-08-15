@@ -31,10 +31,12 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import InputMask from 'react-input-mask';
 
 const { TextArea } = Input;
 
 function Main() {
+    const [value, onChange] = useState(new Date());
     //const {user} = useSelector((state)=> state.main) 
     const [telegramChatId, setTelegramChatId] = useState()  
     const dispatch = useDispatch(); 
@@ -221,7 +223,7 @@ function Main() {
         api.post('portfolio/user_landing/send_grade/',
             {
                 name: nameFeedHolder,
-                phone: '+7' + phoneFeedHolder,
+                phone: phoneFeedHolder,
                 comment: commentFeedHolder,
                 grade: gradeFeedHolder,
                 telegram_id: telegramChatId,
@@ -248,9 +250,12 @@ function Main() {
         setPhoneHolder('')
         setSelectedService('')
         setSelectedDate(null)
-        setSelectedTime('')
+        setSelectedTime(null)
         setCommentHolder('')
         setNotSetService(false)
+        setYHolder('')
+        setMHolder('')
+        setDHolder('')
     }
 
     const error = (text) => {
@@ -355,219 +360,328 @@ function Main() {
 
     return (
         <Spin className="spinner_loading"  size="large" spinning={isLoading || sendData}>
-        <div className="landing">
-                        <div className="landing_wrapper">
-                            <div className="header"></div>
-                            <div className="section">
-                                <div className="section_main">
-                                    <div className="section_user">
-                                        <div style={{backgroundImage: `url(${userData.avatar})`}} className="user_img"></div>
-                                        <div className="user_name">{userData.first_name !== '' ? userData.first_name + " " : "" }{ userData.last_name !== '' ?  userData.last_name : ''}</div>
-                                        <Tooltip placement="right" title={userData.rating} className="user_raiting">
-                                            <div style={{display: 'flex'}}>
-                                                <Rate style={{color: '#F6BB62'}} disabled value={userData.rating} allowHalf/>
-                                                <div className="user_raiting_number">{userData.rating?.toFixed(1)}</div>
-                                            </div>
-                                        </Tooltip>
-                                        <div onClick={() => {
-                                        setFeedbackV(true)
-                                        }} className="btn_create_order">
-                                            <span>Записаться</span>
-                                        </div>
+             {userData.landing_is_active ? 
+             <div className="landing">
+                <div className="landing_wrapper">
+                    <div className="header"></div>
+                    <div className="section">
+                        <div className="section_main_desktop">
+                            <div className="section_user">
+                                <div style={{backgroundImage: `url(${userData.avatar})`, borderRadius: '50%'}} className="user_img"></div>
+                                <div className="user_name">{userData.first_name !== '' ? userData.first_name + " " : "" }{ userData.last_name !== '' ?  userData.last_name : ''}</div>
+                                <Tooltip placement="right" title={userData.rating?.toFixed(1)} className="user_raiting">
+                                    <div style={{display: 'flex'}}>
+                                        <Rate style={{color: '#F6BB62'}} disabled value={userData.rating} allowHalf/>
+                                        <div className="user_raiting_number">{userData.rating?.toFixed(1)}</div>
                                     </div>
-                                    <div className="section_about_user">
-                                        <div class="about_user_left">
-                                            <div className="about_user_title">Обо мне</div>
-                                            <div className="about_user_text">{userData.about ? userData.about : 'Описание отсутствует'}</div>
-                                        </div>
-                                        <div className="about_user_right">
-                                            <div className="reviews_title">Отзывы <span onClick={()=> setModalV(true)} className="rewiews_title_img"></span></div>
-                                            <div className="reviews_main">
-                                                <div className="reviews_main_wrapper">
-                                                    {feedbackData ? feedbackData.map((elem)=> <div className="rewiews_user">
-                                                    <Avatar src="https://joeschmoe.io/api/v1/random" className="rewiews_user_img"/>
-                                                    <Tooltip placement="left" className="grade_wrapper">
-                                                        <Rate style={{color: '#F6BB62'}} className='grade' disabled value={elem.grade} allowHalf></Rate>
-                                                        <div className="rewiews_grade_raiting">{elem.grade + '.0'}</div>
-                                                    </Tooltip>
-                                                    <div className="rewiews_user_client">{elem.client}</div>
-                                                    <div className="rewiews_user_comment">{elem.comment}</div>
-                                                    <div className="rewiews_user_date">{elem.created}</div>
-                                                    </div>)   : "Список отзывов пуст"}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="section_services">
-                                        <div className="services_title">Услуги</div>
-                                        <div className="services_block">
-                                            {servicesData.map((elem)=> <div onClick={() => {
-                                            setSelectedService(elem.id)
-                                            setFeedbackV(true)
-                                            }} className="service">
-                                                <div className="service_wrapper">
-                                                    <div style={{backgroundImage: `url(${elem.img})`}} className="service_img"></div>
-                                                    <div className="service_img_block_info">
-                                                        <div className="service_info_title">{elem.name}</div>
-                                                        <div className="service_info_text">{elem.description ? elem.description : 'Описание отсутствует'}</div>
-                                                        <div className="service_info_group">
-                                                            <div className="service_info_cost">Стоимость: {elem.cost} ₽</div>
-                                                            <div className="service_info_duration">Длительность: {elem.duration}</div>
-                                                        </div>
-                                                        <div className="service_info_btn">записаться</div>
-                                                    </div>
-                                                </div>
-                                                <div className="service_img_wrapper"></div>
-                                            </div>)}
+                                </Tooltip>
+                                <div onClick={() => {
+                                setFeedbackV(true)
+                                }} className="btn_create_order">
+                                    <span>Записаться</span>
+                                </div>
+                            </div>
+                            <div className="section_about_user">
+                                <div className="about_user_left">
+                                    <div className="about_user_title">Обо мне</div>
+                                    <div className="about_user_text">{userData.about ? userData.about : 'Описание отсутствует'}</div>
+                                </div>
+                                <div className="about_user_right">
+                                    <div className="reviews_title">Отзывы <span onClick={()=> setModalV(true)} className="rewiews_title_img"></span></div>
+                                    <div className="reviews_main">
+                                        <div className="reviews_main_wrapper">
+                                            {feedbackData ? feedbackData.map((elem)=> <div key={elem.id} className="rewiews_user">
+                                            <Avatar src="https://joeschmoe.io/api/v1/random" className="rewiews_user_img"/>
+                                            <Tooltip placement="left" className="grade_wrapper">
+                                                <Rate style={{color: '#F6BB62'}} className='grade' disabled value={elem.grade} allowHalf></Rate>
+                                                <div className="rewiews_grade_raiting">{elem.grade + '.0'}</div>
+                                            </Tooltip>
+                                            <div className="rewiews_user_client">{elem.client}</div>
+                                            <div className="rewiews_user_comment">{elem.comment}</div>
+                                            <div className="rewiews_user_date">{elem.created}</div>
+                                            </div>)   : "Список отзывов пуст"}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="section_botton">IT-Power</div>
+                            <div className="section_services">
+                                <div className="services_title">Услуги</div>
+                                <div className="services_block">
+                                    {servicesData.map((elem)=> <div key={elem.id} onClick={() => {
+                                    setSelectedService(elem.id)
+                                    setFeedbackV(true)
+                                    }} className="service">
+                                        <div className="service_wrapper">
+                                            <div style={{backgroundImage: `url(${elem.img})`}} className="service_img"></div>
+                                            <div className="service_img_block_info">
+                                                <div className="service_info_title">{elem.name}</div>
+                                                <div className="service_info_text">{elem.description ? elem.description : 'Описание отсутствует'}</div>
+                                                <div className="service_info_group">
+                                                    <div className="service_info_cost">Стоимость: {elem.cost} ₽</div>
+                                                    <div className="service_info_duration">Длительность: {elem.duration}</div>
+                                                </div>
+                                                <div className="service_info_btn">записаться</div>
+                                            </div>
+                                        </div>
+                                        <div className="service_img_wrapper"></div>
+                                    </div>)}
+                                </div>
+                            </div>
                         </div>
-                        <Modal className={'modal-record'} footer={null} onCancel={() => {
-                            setFeedbackV(false)
-                            }} title="Запись" visible={feedbackV}>
-                            <Form onFinish={sendRecord} className={'service-form'}>
-                            <Input value={nameHolder} htmlType={'text'} onChange={((e) => {
-                            setNameHolder(e.target.value)
-                            })} required className={'form-input'} placeholder="Имя"/>
-                            <Input id={'phone-input'} value={phoneHolder} onChange={((e) => {
-                            setPhoneHolder(e.target.value)
-                            })} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/>
-                            <select value={selectedService} required onChange={(e) => {
-                            setTimeData('')
-                            setSelectedService(e.target.value)
-                            }}
-                            className={'ant-input form-input email-select current'}>
-                            <option selected disabled className={'pre-selected'} value={""}>Услуга</option>
-                            {servicesData.map(item => (
-                            <option className="option_duration" key={item.id} value={item.id}>{item.name + ' - ' + item.duration}</option>
-                            ))}
-                            </select>
-                            <div className={'dates-block'}>
-                            {selectedService && 
-                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
 
-                            <KeyboardDatePicker
-                                onMonthChange={(month)=> changeMonth(month)}
-                                format="dd/MM/yyyy"
-                                label="Выберите удобную дату"
-                                value={selectedDate}
-                                onChange={getCurrentDay}
-                                shouldDisableDate={filterWeekends}
-                                onClose={()=>closeDatePicker()}
-                                // onClick={()=> setOpenCalendar(!openCalendar)}
-                            />
-                            
-                            </MuiPickersUtilsProvider>
-                            }
+                        {/* mobile version */}
+                        <div className="section_main_mobile">
+                            <div className="section_user">
+                                <div style={{backgroundImage: `url(${userData.avatar})`, borderRadius: '50%'}} className="user_img"></div>
+                                <div className="user_name">{userData.first_name !== '' ? userData.first_name + " " : "" }{ userData.last_name !== '' ?  userData.last_name : ''}</div>
+                                <Tooltip placement="right" title={userData.rating?.toFixed(1)} className="user_raiting">
+                                    <div style={{display: 'flex'}}>
+                                        <Rate style={{color: '#F6BB62'}} disabled value={userData.rating} allowHalf/>
+                                        <div className="user_raiting_number">{userData.rating?.toFixed(1)}</div>
+                                    </div>
+                                </Tooltip>
+                                <div onClick={() => {
+                                setFeedbackV(true)
+                                }} className="btn_create_order">
+                                    <span>Записаться</span>
+                                </div>
                             </div>
-                            {notWorking &&
-                            <Alert className={'form-input'} message={errors} type="error"/>
-                            }
-                            {notSetService ? selectedService !== '' && notWorking === false && 
-                            <Alert className={'form-input'} type="error" message={errors} />
-                            : <></>
-                            }
-                            {loadDate == null ? timeData.length > 0 &&
-                            <div className={'time-block'}>
-                            {timeData.map(item => (
-                            <div onClick={() => {
-                            setSelectedTime(item)
-                            }} className={'time-item' + (selectedTime === item ? ' time-item__selected' : '')}
-                            key={item} value={item}>{item}</div>
-                            ))}
+                            <div className="section_about_user">
+                                <div className="about_user_left">
+                                    <div className="about_user_title">Обо мне</div>
+                                    <div className="about_user_text">{userData.about ? userData.about : 'Описание отсутствует'}</div>
+                                </div>
+                                <div className="section_services">
+                                <div className="services_title">Услуги</div>
+                                <div className="services_block">
+                                    {servicesData.map((elem)=> <div key={elem.id} onClick={() => {
+                                    setSelectedService(elem.id)
+                                    setFeedbackV(true)
+                                    }} className="service">
+                                        <div className="service_wrapper">
+                                            <div style={{backgroundImage: `url(${elem.img})`}} className="service_img"></div>
+                                            <div className="service_img_block_info">
+                                                <div className="service_info_title">{elem.name}</div>
+                                                <div className="service_info_text">{elem.description ? elem.description : 'Описание отсутствует'}</div>
+                                                <div className="service_info_group">
+                                                    <div className="service_info_cost">Стоимость: {elem.cost} ₽</div>
+                                                    <div className="service_info_duration">Длительность: {elem.duration}</div>
+                                                </div>
+                                                <div className="service_info_btn">записаться</div>
+                                            </div>
+                                        </div>
+                                        <div className="service_img_wrapper"></div>
+                                    </div>)}
+                                </div>
+                                </div>
+                                <div className="about_user_right">
+                                    <div className="reviews_title">Отзывы <span onClick={()=> setModalV(true)} className="rewiews_title_img"></span></div>
+                                    <div className="reviews_main">
+                                        <div className="reviews_main_wrapper">
+                                            {feedbackData ? feedbackData.map((elem)=> <div key={elem.id} className="rewiews_user">
+                                            <Avatar src="https://joeschmoe.io/api/v1/random" className="rewiews_user_img"/>
+                                            <Tooltip placement="left" className="grade_wrapper">
+                                                <Rate style={{color: '#F6BB62'}} className='grade' disabled value={elem.grade} allowHalf></Rate>
+                                                <div className="rewiews_grade_raiting">{elem.grade + '.0'}</div>
+                                            </Tooltip>
+                                            <div className="rewiews_user_client">{elem.client}</div>
+                                            <div className="rewiews_user_comment">{elem.comment}</div>
+                                            <div className="rewiews_user_date">{elem.created}</div>
+                                            </div>)   : "Список отзывов пуст"}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            :  <Spin  size="large" spinning={loadDate}></Spin>
-                            }
-                            <TextArea onChange={((e) => {
-                            setCommentHolder(e.target.value)
-                            })} placeholder="Комментарий" className={'form-input'} allowClear/>
-                            <div><Switch required checked={recordCheck} onChange={(e) => {
-                            setRecordCheck(e)
-                            }} className={'form-switch'}/> Согласен(-а) на обработку данных *
-                            </div>
-                            <div className="form-buttons">
-                            <Button className={"submit-button"} onClick={() => {
-                            setFeedbackV(false)
-                            }}>Отмена</Button>
-                            <Button
-                            disabled={recordCheck === false || notWorking === true || nameHolder === '' || phoneHolder === '' || selectedService === null || selectedDate === null || selectedTime === null}
-                            htmlType="submit">Записаться</Button>
-
-                            </div>
-                            </Form>
-                        </Modal>
-                        <Modal footer={null} onCancel={() => {
-                            setModalV(false)
-                            }} title="Добавить отзыв" visible={modalV}>
-                            <Form onFinish={sendFeedback} className={'service-form'}>
-                            <Input onChange={(e) => {
-                            setNameFeedHolder(e.target.value)
-                            }} htmlType={'text'} required className={'form-input'} placeholder="Имя"/>
-                            <Input  id={'phone-input'} onChange={(e) => {
-                            setPhoneFeedHolder(e.target.value)
-                            }} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/>
-                            <Rate onChange={(e) => {
-                            setGradeFeedHolder(e)
-                            }} required className={'feedback-rating '}/>
-                            <TextArea onChange={(e) => {
-                            setCommentFeedHolder(e.target.value)
-                            }} placeholder="Комментарий" className={'form-input'} allowClear/>
-                            <div><Switch value={checkFeedHolder} onChange={(e) => {
-                            setCheckFeedHolder(e)
-                            }} required defaultChecked className={'form-switch'}/> Согласен(-а) на обработку данных *
-                            </div>
-                            <div className="form-buttons">
-                            <Button id={'cancel-button'} className={"submit-button form-button cancel-button"} onClick={() => {
-                            setModalV(false)
-                            }}>Отмена</Button>
-                            <Button className={"form-button"} disabled={checkFeedHolder === false || gradeFeedHolder === null || phoneFeedHolder === null}
-                            htmlType="submit">Создать</Button>
-
-                            </div>
-                            </Form>
-                        </Modal>
+                        </div>
+                        {/* end mobile verison */}
                     </div>
-                
-                    <Modal style={{zIndex: '99999'}} closable={false} footer={null} visible={errorModal}>
-                        <Error></Error>
-                    </Modal>
-                    <Modal footer={null} onCancel={() => {
-                        setSuccessFeedModalV(false)
-                        }} title="Успех" visible={successFeedModalV}>
-                        <Result
-                        status="success"
-                        title="Отзыв"
-                        subTitle="Ваш отзыв добавлен, спасибо!"
-                        extra={[
-                        <Button onClick={() => {
-                        setSuccessFeedModalV(false)
-                        }} type="primary" key="console">
-                        Закрыть
-                        </Button>,
+                    <div className="section_botton">IT-Power</div>
+                </div>
+                <Modal className={'modal-record'} footer={null} onCancel={() => {
+                    setFeedbackV(false)
+                    }} title="Запись" visible={feedbackV}>
+                    <Form onFinish={sendRecord} className={'service-form'}>
+                    <Input value={nameHolder} htmlType={'text'} onChange={((e) => {
+                    setNameHolder(e.target.value)
+                    })} required className={'form-input'} placeholder="Имя"/>
 
-                        ]}
-                        />
-                    </Modal>
-                    <Modal footer={null} onCancel={() => {
-                        setSuccessModalV(false)
-                        }} title="Успех" visible={successModalV}>
-                        <Result
-                        status="success"
-                        title="Запись"
-                        subTitle="Ваша запись успешно сформирована!"
-                        extra={[
-                        <Button onClick={() => {
-                        setSuccessModalV(false)
-                        }} type="primary" key="console">
-                        Закрыть
-                        </Button>,
+                    <InputMask mask="+7(999)999-99-99" value={phoneHolder} onChange={((e) => {
+                    setPhoneHolder(e.target.value)
+                    })} required placeholder={'Номер телефона'} className={'form-input input_phone'} />
 
-                        ]}
-                        />
-                    </Modal>
+                    {/* <Input id={'phone-input'} value={phoneHolder} onChange={((e) => {
+                    setPhoneHolder(e.target.value)
+                    })} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/> */}
+
+                    <select value={selectedService} required onChange={(e) => {
+                    setTimeData('')
+                    setSelectedService(e.target.value)
+                    }}
+                    className={'ant-input form-input email-select current'}>
+                    <option selected disabled className={'pre-selected'} value={""}>Услуга</option>
+                    {servicesData.map(item => (
+                    <option className="option_duration" key={item.id} value={item.id}>{item.name + ' - ' + item.duration}</option>
+                    ))}
+                    </select>
+                    <div className={'dates-block'}>
+                    {selectedService && 
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
+
+                    <KeyboardDatePicker
+                        onMonthChange={(month)=> changeMonth(month)}
+                        format="dd/MM/yyyy"
+                        label={selectedDate === null ? `Выберите удобную дату` : dHolder + '/' + mHolder + '/' + yHolder}
+                        value={selectedDate}
+                        onChange={getCurrentDay}
+                        shouldDisableDate={filterWeekends}
+                        onClose={()=>closeDatePicker()}
+                        cancelLabel={
+                            <Button color="default" disableElevation className="decline_calendar">
+                              Отмена
+                            </Button>
+                          }
+                        error={''}
+                        invalidDateMessage={''}
+                        invalidLabel={''}
+                        
+                        // rifmFormatter={dateFormatter}
+                        // onClick={()=> setOpenCalendar(!openCalendar)}
+                    />
+                    
+                    </MuiPickersUtilsProvider>
+                    }
+                    </div>
+                    {notWorking &&
+                    <Alert className={'form-input'} message={errors} type="error"/>
+                    }
+                    {notSetService ? selectedService !== '' && 
+                    <Alert className={'form-input'} type="error" message={errors} />
+                    : <></>
+                    }
+                    {loadDate == null ? timeData.length > 0 &&
+                    <div className={'time-block'}>
+                    {timeData.map(item => (
+                    <div onClick={() => {
+                    setSelectedTime(item)
+                    }} className={'time-item' + (selectedTime === item ? ' time-item__selected' : '')}
+                    key={item} value={item}>{item}</div>
+                    ))}
+                    </div>
+                    :  <Spin  size="large" spinning={loadDate}></Spin>
+                    }
+                    <TextArea onChange={((e) => {
+                    setCommentHolder(e.target.value)
+                    })} placeholder="Комментарий" className={'form-input'} allowClear/>
+                    <div><Switch required checked={recordCheck} onChange={(e) => {
+                    setRecordCheck(e)
+                    }} className={'form-switch'}/> Согласен(-а) на обработку данных *
+                    </div>
+                    <div className="form-buttons">
+                    <Button className={"submit-button"} onClick={() => {
+                    setFeedbackV(false)
+                    }}>Отмена</Button>
+                    <Button
+                    disabled={recordCheck === false || notWorking === true || nameHolder === '' || phoneHolder === '' || selectedService === null || selectedDate === null || selectedTime === null}
+                    htmlType="submit">Записаться</Button>
+
+                    </div>
+                    </Form>
+                </Modal>
+                <Modal footer={null} onCancel={() => {
+                    setModalV(false)
+                    }} title="Добавить отзыв" visible={modalV}>
+                    <Form onFinish={sendFeedback} className={'service-form'}>
+                    <Input onChange={(e) => {
+                    setNameFeedHolder(e.target.value)
+                    }} htmlType={'text'} required className={'form-input'} placeholder="Имя"/>
+                    {/* <Input  id={'phone-input'} onChange={(e) => {
+                    setPhoneFeedHolder(e.target.value)
+                    }} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/> */}
+
+                    <InputMask mask="+7(999)999-99-99" id={'phone-input'} onChange={(e) => {
+                    setPhoneFeedHolder(e.target.value)
+                    }} required placeholder={'Номер телефона'} className={'form-input input_phone'} />
+                    <Rate onChange={(e) => {
+                    setGradeFeedHolder(e)
+                    }} required className={'feedback-rating '}/>
+                    <TextArea onChange={(e) => {
+                    setCommentFeedHolder(e.target.value)
+                    }} placeholder="Комментарий" className={'form-input'} allowClear/>
+                    <div><Switch value={checkFeedHolder} onChange={(e) => {
+                    setCheckFeedHolder(e)
+                    }} required defaultChecked className={'form-switch'}/> Согласен(-а) на обработку данных *
+                    </div>
+                    <div className="form-buttons">
+                    <Button id={'cancel-button'} className={"submit-button form-button cancel-button"} onClick={() => {
+                    setModalV(false)
+                    }}>Отмена</Button>
+                    <Button className={"form-button"} disabled={checkFeedHolder === false || gradeFeedHolder === null || phoneFeedHolder === null}
+                    htmlType="submit">Создать</Button>
+
+                    </div>
+                    </Form>
+                </Modal>
+            </div>
+            
+            :  <div className="landing_not_active">
+                    <div className="landing_wrapper">
+                        <div className="header"></div>
+                        <div className="section_not_active_wrapper">
+                            <div className="section_not_active">
+                                <div className="section_user">
+                                    <div style={{backgroundImage: `url(${userData.avatar})`}} className="user_img"></div>
+                                    <div className="user_name">{userData.length > 0 ? userData.first_name + " " + userData.last_name : "" }</div>
+                                    <Tooltip placement="right" title={userData.rating} className="user_raiting">
+                                        <div style={{display: 'flex'}}>
+                                            {userData.length > 0 && <><Rate style={{color: '#F6BB62'}} disabled value={userData.rating} allowHalf/>
+                                            <div className="user_raiting_number">{userData.rating}</div></>
+                                            }   
+                                        </div>
+                                    </Tooltip>
+                                    <div className="user_not_active">Пользователь отключил возможность оставлять заявку</div>
+                                </div>
+                            </div>
+                        </div>        
+                    </div>    
+                </div>        }
+           
+            <Modal style={{zIndex: '99999'}} closable={false} footer={null} visible={errorModal}>
+                <Error></Error>
+            </Modal>
+            <Modal footer={null} onCancel={() => {
+                setSuccessFeedModalV(false)
+                }} title="Успех" visible={successFeedModalV}>
+                <Result
+                status="success"
+                title="Отзыв"
+                subTitle="Ваш отзыв добавлен, спасибо!"
+                extra={[
+                <Button onClick={() => {
+                setSuccessFeedModalV(false)
+                }} type="primary" key="console">
+                Закрыть
+                </Button>,
+
+                ]}
+                />
+            </Modal>
+            <Modal footer={null} onCancel={() => {
+                setSuccessModalV(false)
+                }} title="Успех" visible={successModalV}>
+                <Result
+                status="success"
+                title="Запись"
+                subTitle="Ваша запись успешно сформирована!"
+                extra={[
+                <Button onClick={() => {
+                setSuccessModalV(false)
+                }} type="primary" key="console">
+                Закрыть
+                </Button>,
+
+                ]}
+                />
+            </Modal>
     {telegramChatId === undefined && 
     <div className={'block_not_found'}>
         <div className={'block_not_found_wrapper'}>
@@ -581,249 +695,3 @@ function Main() {
 }
 
 export default Main;
-
-    // <Content className={isLoading ? 'main-container loading' : 'main-container'}>
-    //         <div className={'img-block'}>
-    //             <img src={userData.avatar} alt=""/>
-    //         </div>
-
-    //         <span className={'name-title'}>{userData.first_name} {userData.last_name}</span>
-    //         <Tooltip placement="right" title={userData.rating}>
-    //         <div>
-    //         <Rate disabled value={userData.rating} allowHalf/>
-    //         </div>
-    //         </Tooltip>
-    //         <Button  onClick={() => {
-    //         setFeedbackV(true)
-    //     }} size={'large'} className={'service-button'}>Записаться</Button>
-    //         <span className={'services-title'}>Услуги</span>
-    //         <div className={'services-list'}>
-    //     {servicesData.map(item => (
-    //         <Card
-    //         key={item.id}
-    //         onClick={() => {
-    //         setSelectedService(item.id)
-    //         setFeedbackV(true)
-    //     }}
-    //         className={'card'}
-    //         hoverable={true}
-    //         cover={
-    //         <img
-    //         alt="example"
-    //         src={item.img}
-    //         className={'card-img'}
-    //         />
-    //     }>
-    //         <Meta
-    //         className={'card-text'}
-    //         title={item.name}
-    //         description={item.description}
-    //         />
-    //         <div className={'card-timeline'}>продолжительность: {item.duration}</div>
-    //         <div className={'card-price'}>цена: {item.cost} руб.</div>
-    //         </Card>
-    //         ))}
-
-
-    //         </div>
-    //         <div className={'feedback-title'}><span>Отзывы</span> <Button onClick={() => {
-    //         setModalV(true)
-    //     }} className={'feedback_add-btn'} type="primary" shape="circle" icon={<PlusOutlined/>}/></div>
-
-    //         <Card className={'feedback-list'}>
-    //     {feedbackData.map(item => (
-    //         <Comment
-    //         key={item.id}
-    //         className={'comment-item'}
-    //         author={<a>{item.client}</a>}
-    //         avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt={item.client}/>}
-    //         content={
-    //         <p>
-    //     {item.comment}
-    //         </p>
-    //     }
-    //         datetime={
-    //         <Tooltip title={item.created}>
-    //         <span>{item.created}</span>
-    //         </Tooltip>
-    //     }
-
-    //         >
-    //         <Tooltip placement="left" title={item.grade}>
-    //         <div className={'comment-grade-div'}>
-    //         <Rate className={'grade'} disabled value={item.grade}></Rate>
-    //         </div>
-    //         </Tooltip>
-    //         </Comment>
-    //         ))}
-    //         </Card>
-
-
-    //         <Modal className={'modal-record'} footer={null} onCancel={() => {
-    //         setFeedbackV(false)
-    //     }} title="Запись" visible={feedbackV}>
-    //         <Form onFinish={sendRecord} className={'service-form'}>
-    //         <Input value={nameHolder} htmlType={'text'} onChange={((e) => {
-    //         setNameHolder(e.target.value)
-    //     })} required className={'form-input'} placeholder="Имя"/>
-    //         <Input id={'phone-input'} value={phoneHolder} onChange={((e) => {
-    //         setPhoneHolder(e.target.value)
-    //     })} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/>
-    //         <select value={selectedService} required onChange={(e) => {
-    //         setMHolder('')
-    //         setDHolder('')
-    //         setTimeData('')
-    //         setSelectedService(e.target.value)
-    //     }}
-    //         className={'ant-input form-input email-select current'}>
-    //         <option selected disabled className={'pre-selected'} value={""}>Услуга</option>
-    //         {servicesData.map(item => (
-    //         <option key={item.id} value={item.id}>{item.name + ' - ' + item.duration}</option>
-    //         ))}
-    //         </select>
-    //         <div className={'dates-block'}>
-    //         {selectedService && 
-    //                 <>
-    //                 <select required value={yHolder} className={'dates-item form-input'} onChange={(e) => {
-    //                     setYHolder(e.target.value)
-    //                 }} name="year">
-    //                 <option selected disabled value="">День</option>
-    //                 {arrayHolder && arrayHolder.map(elem => <option key={elem} value={elem}>{elem}</option>)}
-    //                 </select>
-    //                 <select required value={mHolder} className={'dates-item email-select form-input'} onChange={(e) =>
-    //                 getFreeDay(e.target.value)
-    //                 } name="month">
-    //                 <option selected disabled value="">Месяц</option>
-    //                 {arrayMHolder.length > 0 && arrayMHolder.map(elem=>
-    //                     <option key={elem.value} value={elem.value} disabled={elem.active}
-    //                     className={elem.active == 0 ? 'option_active' : 'option_disabled'}>{elem.title}</option>
-    //                 )}
-    //                 </select>
-    //                 {mHolder && 
-    //                 <select required value={dHolder} className={'dates-item email-select form-input'} onChange={(e) => {
-    //                 setDHolder(e.target.value)
-    //                 }} name="day">
-    //                     <option disabled selected value="">День</option>
-    //                     {shedulesMaster && shedulesMaster.map(elem => 
-    //                         <option key={elem.date} disabled={elem.working == false}
-    //                         className={elem.working == false ? 'option_day_disabled' : 'option_day_active'} value={elem.date.split('.')[0]}>{elem.date.split('.')[0]}</option>
-    //                         )}
-    //                 </select>
-    //                 }
-    //                 </>
-    //         }
-           
-    //         </div>
-    //     {notWorking &&
-    //         <Alert className={'form-input'} message="Мастер не работает в этот день" type="error"/>
-    //     }
-    //     {notSetService ? selectedService !== '' && 
-    //         <Alert className={'form-input'} type="error" message="Пожалуйста, выберите услугу" />
-    //         : <></>
-    //     }
-    //     {loadDate == null ? timeData.length > 0 &&
-    //         <div className={'time-block'}>
-    //     {timeData.map(item => (
-    //         <div onClick={() => {
-    //         setSelectedTime(item)
-    //     }} className={'time-item' + (selectedTime === item ? ' time-item__selected' : '')}
-    //         key={item} value={item}>{item}</div>
-    //         ))}
-    //         </div>
-    //         :  <Spin  size="large" spinning={loadDate}></Spin>
-    //     }
-    //         <TextArea onChange={((e) => {
-    //         setCommentHolder(e.target.value)
-    //     })} placeholder="Комментарий" className={'form-input'} allowClear/>
-    //         <div><Switch required checked={recordCheck} onChange={(e) => {
-    //         setRecordCheck(e)
-    //     }} className={'form-switch'}/> Согласен(-а) на обработку данных *
-    //         </div>
-    //         <div className="form-buttons">
-    //         <Button className={"submit-button"} onClick={() => {
-    //         setFeedbackV(false)
-    //     }}>Отмена</Button>
-    //         <Button
-    //         disabled={recordCheck === false || notWorking === true || nameHolder === '' || phoneHolder === '' || selectedService === null || selectedDate === null || selectedTime === null}
-    //         htmlType="submit">Создать</Button>
-
-    //         </div>
-    //         </Form>
-    //         </Modal>
-
-
-    //         <Modal footer={null} onCancel={() => {
-    //         setModalV(false)
-    //     }} title="Добавить отзыв" visible={modalV}>
-    //         <Form onFinish={sendFeedback} className={'service-form'}>
-    //         <Input onChange={(e) => {
-    //         setNameFeedHolder(e.target.value)
-    //     }} htmlType={'text'} required className={'form-input'} placeholder="Имя"/>
-    //         <Input  id={'phone-input'} onChange={(e) => {
-    //         setPhoneFeedHolder(e.target.value)
-    //     }} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/>
-    //         <Rate onChange={(e) => {
-    //         setGradeFeedHolder(e)
-    //     }} required className={'feedback-rating '}/>
-    //         <TextArea onChange={(e) => {
-    //         setCommentFeedHolder(e.target.value)
-    //     }} placeholder="Комментарий" className={'form-input'} allowClear/>
-    //         <div><Switch value={checkFeedHolder} onChange={(e) => {
-    //         setCheckFeedHolder(e)
-    //     }} required defaultChecked className={'form-switch'}/> Согласен(-а) на обработку данных *
-    //         </div>
-    //         <div className="form-buttons">
-    //         <Button id={'cancel-button'} className={"submit-button form-button cancel-button"} onClick={() => {
-    //         setModalV(false)
-    //     }}>Отмена</Button>
-    //         <Button className={"form-button"} disabled={checkFeedHolder === false || gradeFeedHolder === null || phoneFeedHolder === null}
-    //         htmlType="submit">Создать</Button>
-
-    //         </div>
-    //         </Form>
-    //         </Modal>
-
-
-    //         <Modal footer={null} onCancel={() => {
-    //         setSuccessModalV(false)
-    //     }} title="Успех" visible={successModalV}>
-    //         <Result
-    //         status="success"
-    //         title="Запись"
-    //         subTitle="Ваша запись успешно сформирована!"
-    //         extra={[
-    //         <Button onClick={() => {
-    //         setSuccessModalV(false)
-    //         }} type="primary" key="console">
-    //         Закрыть
-    //         </Button>,
-
-    //         ]}
-    //         />
-    //         </Modal>
-
-    //         <Modal footer={null} onCancel={() => {
-    //         setSuccessFeedModalV(false)
-    //     }} title="Успех" visible={successFeedModalV}>
-    //         <Result
-    //         status="success"
-    //         title="Отзыв"
-    //         subTitle="Ваш отзыв добавлен, спасибо!"
-    //         extra={[
-    //         <Button onClick={() => {
-    //         setSuccessFeedModalV(false)
-    //     }} type="primary" key="console">
-    //         Закрыть
-    //         </Button>,
-
-    //         ]}
-    //         />
-    //         </Modal>
-
-
-    //         <Modal closable={false} footer={null} visible={errorModal}>
-    //         <Error></Error>
-    //         </Modal>
-
-
-    // </Content>
