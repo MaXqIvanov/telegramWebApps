@@ -648,8 +648,9 @@ option {
 .user_not_active_id{
     display: flex;
     position: absolute;
-    width: fit-content;
     height: fit-content;
+    width: 100%;
+    justify-content: center;
     bottom: 10px;
     left: 50%;
     transform: translate(-50%, 0);
@@ -663,6 +664,7 @@ option {
         margin-top: -3px;
         color: rgb(0, 176, 0);
         font-size: medium;
+        cursor: pointer;
     }
 }
 .landing_not_active{
@@ -918,7 +920,9 @@ option {
     width: 15px;
     background-size: contain;
     background-image: url('../media/copy_text.svg');
+    background-repeat: no-repeat;
     margin-left: 5px;
+    cursor: pointer;
 }
 .alert_success_copy{
     position: absolute;

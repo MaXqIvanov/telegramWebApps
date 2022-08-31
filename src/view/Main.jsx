@@ -654,6 +654,7 @@ function Main() {
                                          textField.select()
                                          document.execCommand('copy')
                                          textField.remove()
+                                         setIsCopySuccess(true)
                                     }} className="user_not_active_id">id вашей группы <span>{telegramChatId}</span>
                                     <div onClick={()=> setIsCopySuccess(true)} title="скопировать" className="user_not_active_copy"></div></div>
                                 </div>
