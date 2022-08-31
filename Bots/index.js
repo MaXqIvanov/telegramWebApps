@@ -32,7 +32,7 @@ bot.hears(/./, async (ctx) =>{
       user_id = chat.from.id;
     //   console.log(chat_id[1]);
     //   console.log(user_id);
-    
+
       // delete this line
       // end delete this line
       await axios.post(`https://everyservicesapi.itpw.ru/chat/telegram_chat/`,{
@@ -53,7 +53,7 @@ try {
   }
   if(ctx.match.input.includes('/post')){
       let text = ctx.update.message.text.split('/post')
-      if(text[0] == ''){
+      if(text[0] == '' && text[1] == ''){
         text = 'вы не ввели сообщение'
       }else {
         text = text[1]
