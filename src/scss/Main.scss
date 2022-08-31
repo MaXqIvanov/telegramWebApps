@@ -655,9 +655,13 @@ option {
     transform: translate(-50%, 0);
     padding: 10px;
     @media(max-width: 530px){
-        width: 100%;
         text-align: center;
         font-size: small;
+    }
+    span{
+        margin-left: 5px;
+        color: rgb(0, 176, 0);
+        font-size: medium;
     }
 }
 .landing_not_active{
@@ -914,4 +918,12 @@ option {
     background-size: contain;
     background-image: url('../media/copy_text.svg');
     margin-left: 5px;
+}
+.alert_success_copy{
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999999;
+    border-radius: 25px;
 }

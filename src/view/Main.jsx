@@ -358,6 +358,13 @@ function Main() {
         || shedulesMaster[31]?.working === false && date.getTime() === new Date(`${shedulesMaster[31]?.date?.split('.')[2]}-${shedulesMaster[31]?.date?.split('.')[1]}-${shedulesMaster[31]?.date?.split('.')[0]}T00:00`).getTime()
     }
       // 
+    const [isCopySuccess, setIsCopySuccess] = useState(false)
+    useEffect(() => {
+     setTimeout(() => {
+        setIsCopySuccess(false)
+     }, 2000);
+    }, [isCopySuccess])
+    
 
     return (
         <Spin className="spinner_loading"  size="large" spinning={isLoading || sendData}>
@@ -640,8 +647,15 @@ function Main() {
                                         </div>
                                     </Tooltip>
                                     <div className="user_not_active">Пользователь отключил возможность оставлять заявку</div>
-                                    <div onClick={()=> navigator.clipboard.writeText(`${telegramChatId}`)} className="user_not_active_id">id вашей группы {telegramChatId}
-                                    <div title="скопировать" className="user_not_active_copy"></div></div>
+                                    <div onClick={()=> {
+                                         var textField = document.createElement('textarea')
+                                         textField.innerText = String(telegramChatId)
+                                         document.body.appendChild(textField)
+                                         textField.select()
+                                         document.execCommand('copy')
+                                         textField.remove()
+                                    }} className="user_not_active_id">id вашей группы <span>{telegramChatId}</span>
+                                    <div onClick={()=> setIsCopySuccess(true)} title="скопировать" className="user_not_active_copy"></div></div>
                                 </div>
                             </div>
                         </div>        
@@ -685,6 +699,8 @@ function Main() {
                 ]}
                 />
             </Modal>
+
+    {isCopySuccess && <Alert className="alert_success_copy" type="success" message={'айди был скопирован успешно'}/>}
     {telegramChatId === undefined && 
     <div className={'block_not_found'}>
         <div className={'block_not_found_wrapper'}>
