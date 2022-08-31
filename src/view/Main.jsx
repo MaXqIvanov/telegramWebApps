@@ -100,6 +100,7 @@ function Main() {
         let user = {...tg.initData};
         let user_id = tg.initDataUnsafe.user?.id
         let chat_id;
+        console.log(tg);
         try {
             await api(`chat/telegram_chat/?user_id=${user_id}`).then((response)=>{ 
             let user_info = response.data
