@@ -640,7 +640,8 @@ function Main() {
                                         </div>
                                     </Tooltip>
                                     <div className="user_not_active">Пользователь отключил возможность оставлять заявку</div>
-                                    <div className="user_not_active_id">id вашей группы {telegramChatId}</div>
+                                    <div onClick={()=> navigator.clipboard.writeText(`${telegramChatId}`)} className="user_not_active_id">id вашей группы {telegramChatId}
+                                    <div title="скопировать" className="user_not_active_copy"></div></div>
                                 </div>
                             </div>
                         </div>        

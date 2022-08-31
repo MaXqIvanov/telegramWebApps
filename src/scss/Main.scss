@@ -646,6 +646,7 @@ option {
     }
 }
 .user_not_active_id{
+    display: flex;
     position: absolute;
     width: fit-content;
     height: fit-content;
@@ -906,4 +907,11 @@ option {
         outline: none;
         background: white;
     }
+}
+.user_not_active_copy{
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    background-image: url('../media/copy_text.svg');
+    margin-left: 5px;
 }
