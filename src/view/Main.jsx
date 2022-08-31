@@ -361,7 +361,7 @@ function Main() {
 
     return (
         <Spin className="spinner_loading"  size="large" spinning={isLoading || sendData}>
-             {userData.landing_is_active ? 
+             {userData.telegram_is_active ? 
              <div className="landing">
                 <div className="landing_wrapper">
                     <div className="header"></div>
