@@ -14,6 +14,13 @@ expressApp.listen(port, () => {
 
 const bot = new Telegraf('5460453079:AAECrP-8PyXD4vIcDeV7fpgMuBcbhilano8', { webHook : { PORT : port} })
 
+
+try {
+    
+} catch (error) {
+    
+}
+
 bot.hears(/./, async (ctx) =>{ 
   const chat = ctx.message
   const web_link = `https://lambent-praline-e00ab7.netlify.app/`
@@ -45,7 +52,12 @@ try {
   }
   if(ctx.match.input.includes('/post')){
       let text = ctx.update.message.text.split('/post')
-      text = text[1]
+      console.log(text);
+      if(text[0] == ''){
+        text = 'вы не ввели сообщение'
+      }else {
+        text = text[1]
+      }
       await ctx.deleteMessage(ctx.message.message_id)   
       ctx.telegram.sendMessage(ctx.chat.id, `${text}`, {
           reply_markup: {
@@ -83,23 +95,27 @@ try {
 )
 
 // this function need if admin send photo for post 
-bot.on('message', async msg => {
-  if(msg.update.message?.caption?.includes('/img')){
-      let text = msg.update.message.caption.split('/img')
-      text = text[1]
-      await msg.deleteMessage(msg.update.message.message_id)   
-      msg.telegram.sendPhoto(msg.update.message.chat.id, msg.update.message?.photo[0]?.file_id, {
-          caption: `${text}`,
-          reply_markup: {
-              resize_keyboard: true,
-              parse_mode: 'Markdown',
-              inline_keyboard: [
-                  [{text: 'Записаться к мастеру ❗', url: `https://t.me/IT_Power_new_bot?start=${msg.update.message.chat.username}`}]
-              ]
-          }
-      })
-  }
-})
+try {
+    bot.on('message', async msg => {
+        if(msg.update.message?.caption?.includes('/img')){
+            let text = msg.update.message.caption.split('/img')
+            text = text[1]
+            await msg.deleteMessage(msg.update.message.message_id)   
+            msg.telegram.sendPhoto(msg.update.message.chat.id, msg.update.message?.photo[0]?.file_id, {
+                caption: `${text}`,
+                reply_markup: {
+                    resize_keyboard: true,
+                    parse_mode: 'Markdown',
+                    inline_keyboard: [
+                        [{text: 'Записаться к мастеру ❗', url: `https://t.me/IT_Power_new_bot?start=${msg.update.message.chat.username}`}]
+                    ]
+                }
+            })
+        }
+      })   
+} catch (error) {
+    
+}
 
 
 bot.startPolling()
