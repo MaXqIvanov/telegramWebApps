@@ -645,6 +645,19 @@ option {
         font-size: small;
     }
 }
+.user_not_active_id{
+    position: absolute;
+    width: fit-content;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 10px;
+    @media(max-width: 530px){
+        width: 100%;
+        text-align: center;
+        font-size: small;
+    }
+}
 .landing_not_active{
     width: 100%;
     min-height: 100vh;

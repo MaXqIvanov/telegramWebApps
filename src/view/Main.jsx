@@ -640,7 +640,7 @@ function Main() {
                                         </div>
                                     </Tooltip>
                                     <div className="user_not_active">Пользователь отключил возможность оставлять заявку</div>
-                                    <p>id вашей группы {telegramChatId}</p>
+                                    <div className="user_not_active_id">id вашей группы {telegramChatId}</div>
                                 </div>
                             </div>
                         </div>        
