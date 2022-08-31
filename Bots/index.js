@@ -30,8 +30,9 @@ bot.hears(/./, async (ctx) =>{
   if(ctx.match.input.includes('/start ')){
       chat_id = chat.text.split(' ')
       user_id = chat.from.id;
-      console.log(chat_id[1]);
-      console.log(user_id);
+    //   console.log(chat_id[1]);
+    //   console.log(user_id);
+    
       // delete this line
       // end delete this line
       await axios.post(`https://everyservicesapi.itpw.ru/chat/telegram_chat/`,{
@@ -52,7 +53,6 @@ try {
   }
   if(ctx.match.input.includes('/post')){
       let text = ctx.update.message.text.split('/post')
-      console.log(text);
       if(text[0] == ''){
         text = 'вы не ввели сообщение'
       }else {
