@@ -193,7 +193,7 @@ function Main() {
         api.post('portfolio/user_landing/create_record/',
             {
                 name: nameHolder,
-                phone: '+7' + phoneHolder,
+                phone: phoneHolder,
                 service: selectedService,
                 date: `${dHolder}.${mHolder}.${yHolder}`,
                 time: selectedTime,
@@ -207,6 +207,12 @@ function Main() {
                     setTimeout(() => {
                         setSuccessModalV(false)
                     }, 3000);
+                    // work this
+                    dispatch(getMastersShedule({
+                        id: telegramChatId,
+                        year: moment().year(),
+                        monthe: moment().month() + 1
+                  }))
                 }
             })
             .catch((err)=>{
@@ -589,7 +595,7 @@ function Main() {
                     setFeedbackV(false)
                     }}>Отмена</Button>
                     <Button
-                    disabled={recordCheck === false || notWorking === true || nameHolder === '' || phoneHolder === '' || selectedService === null || selectedDate === null || selectedTime === null}
+                    disabled={recordCheck === false || notWorking === true || nameHolder === '' || phoneHolder.includes('_') || selectedService === null || selectedDate === null || selectedTime === null}
                     htmlType="submit">Записаться</Button>
 
                     </div>
