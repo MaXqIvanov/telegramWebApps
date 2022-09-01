@@ -544,7 +544,7 @@ function Main() {
                     <KeyboardDatePicker
                         onMonthChange={(month)=> changeMonth(month)}
                         format="dd/MM/yyyy"
-                        label={selectedDate === null ? `Выберите удобную дату` : dHolder + '/' + mHolder + '/' + yHolder}
+                        label={selectedDate === null || dHolder === undefined ? `Выберите удобную дату` : dHolder + '/' + mHolder + '/' + yHolder}
                         value={selectedDate}
                         onChange={getCurrentDay}
                         shouldDisableDate={filterWeekends}
