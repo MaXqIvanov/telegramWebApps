@@ -12,7 +12,8 @@ expressApp.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
 
-const bot = new Telegraf('5460453079:AAECrP-8PyXD4vIcDeV7fpgMuBcbhilano8', { webHook : { PORT : port} })
+// const bot = new Telegraf('5460453079:AAECrP-8PyXD4vIcDeV7fpgMuBcbhilano8', { webHook : { PORT : port} })
+const bot = new Telegraf('5758137762:AAENBJHbRkz_KR5htaH4G9YIOLeOKnkFI24', { webHook : { PORT : port} })
 
 
 try {
@@ -64,7 +65,7 @@ try {
               resize_keyboard: true,
               parse_mode: 'Markdown',
               inline_keyboard: [
-                  [{text: 'Записаться к мастеру ❗', url: `https://t.me/IT_Power_new_bot?start=${ctx.update.message.chat.username}`}]
+                  [{text: 'Записаться к мастеру ❗', url: `https://t.me/SopSop_ru_bot?start=${ctx.update.message.chat.username}`}]
               ]
           }
       })
@@ -107,7 +108,7 @@ try {
                     resize_keyboard: true,
                     parse_mode: 'Markdown',
                     inline_keyboard: [
-                        [{text: 'Записаться к мастеру ❗', url: `https://t.me/IT_Power_new_bot?start=${msg.update.message.chat.username}`}]
+                        [{text: 'Записаться к мастеру ❗', url: `https://t.me/SopSop_ru_bot?start=${msg.update.message.chat.username}`}]
                     ]
                 }
             })
