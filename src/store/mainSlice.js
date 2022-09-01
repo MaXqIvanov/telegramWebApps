@@ -26,13 +26,13 @@ const mainSlice = createSlice({
     [getMastersShedule.fulfilled]: (state, { payload }) => {
       let response = payload.response.data
       let day = Number(moment().format('L').split('/')[1]); 
-      response = response.map((elem,index)=> {
-        if(day >= (Number(elem.date.split('.')[0])) && (moment().year() == payload.params.year)){
-          return {...elem, 'working': false}
-        }else{
-          return {...elem}
-        }
-      })
+      // response = response.map((elem,index)=> {
+      //   if(day >= (Number(elem.date.split('.')[0])) && (moment().year() == payload.params.year)){
+      //     return {...elem, 'working': false}
+      //   }else{
+      //     return {...elem}
+      //   }
+      // })
       state.shedulesMaster = response
     },
     [getMastersShedule.rejected]: (state, action) => {

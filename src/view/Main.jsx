@@ -215,7 +215,7 @@ function Main() {
                 }
             })
             .finally(()=> {
-                setTimeData('')
+                setTimeData([])
                 setSendData(false)
             })
     }
@@ -292,11 +292,11 @@ function Main() {
     }
     
     const closeDatePicker = () => {
-        dispatch(getMastersShedule({
-            id: telegramChatId,
-            year: moment().year(),
-            monthe: moment().month() + 1
-          }))
+        // dispatch(getMastersShedule({
+        //     id: telegramChatId,
+        //     year: moment().year(),
+        //     monthe: moment().month() + 1
+        //   }))
           
     }
 
@@ -522,7 +522,7 @@ function Main() {
                     })} required placeholder={'Номер телефона'} className={'form-input'} addonBefore={'+7'}/> */}
 
                     <select value={selectedService} required onChange={(e) => {
-                    setTimeData('')
+                    setTimeData([])
                     setSelectedService(e.target.value)
                     }}
                     className={'ant-input form-input email-select current'}>
